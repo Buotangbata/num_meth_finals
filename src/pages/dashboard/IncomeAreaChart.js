@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
 // material-ui
@@ -30,7 +29,7 @@ const areaChartOptions = {
 
 // ==============================|| INCOME AREA CHART ||============================== //
 
-const IncomeAreaChart = ({ slot }) => {
+const IncomeAreaChart = ({ x, y }) => {
     const theme = useTheme();
 
     const { primary, secondary } = theme.palette.text;
@@ -43,10 +42,6 @@ const IncomeAreaChart = ({ slot }) => {
             ...prevState,
             colors: [theme.palette.primary.main, theme.palette.primary[700]],
             xaxis: {
-                categories:
-                    slot === 'month'
-                        ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 labels: {
                     style: {
                         colors: [
@@ -69,7 +64,6 @@ const IncomeAreaChart = ({ slot }) => {
                     show: true,
                     color: line
                 },
-                tickAmount: slot === 'month' ? 11 : 7
             },
             yaxis: {
                 labels: {
@@ -85,29 +79,40 @@ const IncomeAreaChart = ({ slot }) => {
                 theme: 'light'
             }
         }));
-    }, [primary, secondary, line, theme, slot]);
+    }, [primary, secondary, line, theme, x, y]);
 
     const [series, setSeries] = useState([
         {
             name: 'F(x)',
-            data: [0, 86, 28, 115, 48, 210, 136]
+            data: x.map((vx, i) => {
+                return {
+                    x: vx, 
+                    y: y[i]
+                }
+            }).slice(0).sort((a,b) => {
+                return a.x - b.x
+            })
         }
     ]);
 
     useEffect(() => {
         setSeries([
             {
-                name: 'F(x)',
-                data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
+               name: 'F(x)',
+            data: x.map((vx, i) => {
+                return {
+                    x: vx, 
+                    y: y[i]
+                }
+            }).slice(0).sort((a,b) => {
+                return a.x - b.x
+            })
             }
         ]);
-    }, [slot]);
+    }, [x, y]);
 
     return <ReactApexChart options={options} series={series} type="area" height={450} />;
 };
 
-IncomeAreaChart.propTypes = {
-    slot: PropTypes.string
-};
 
 export default IncomeAreaChart;

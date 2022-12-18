@@ -31,6 +31,8 @@ import ReportAreaChart from './ReportAreaChart';
 import SalesColumnChart from './SalesColumnChart';
 import MainCard from 'components/MainCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
+import InputData from './InputData';
+import dividedDiff from 'divideddiff/index';
 
 // avatar style
 const avatarSX = {
@@ -70,6 +72,31 @@ const status = [
 const DashboardDefault = () => {
     const [n, setN] = useState(2);
     const [slot, setSlot] = useState('week');
+    const [x, setX] = useState([])
+    const [y, setY] = useState([])
+    const [target, setTarget] = useState()
+
+    function handleX(e, id){
+        let result = [...x]
+        result[id] = +e.target.value
+        setX(result)
+        console.log("X:" +result)
+    }
+    function handleY(e, id){
+        let result = [...y]
+        result[id] = +e.target.value
+        setY(result)
+        console.log("Y:" + result)
+    }
+    function handleExtrapolate(){
+        const {ans} = dividedDiff(n, +target, x, [y.map(e => [e])])
+        let tmpX = [...x, +target]
+        setX(tmpX)
+        let tmpY = [...y, ans]
+        setY(tmpY)
+        console.log(tmpX, tmpY)
+    }
+
 
     return (
         <>
@@ -101,7 +128,7 @@ const DashboardDefault = () => {
                     </Grid>
                     <MainCard content={false} sx={{ mt: 1.5 }}>
                         <Box sx={{ pt: 1, pr: 2 }}>
-                            <IncomeAreaChart slot={slot} />
+                            <IncomeAreaChart x={x} y={y} />
                         </Box>
                     </MainCard>
                 </Grid>
@@ -113,7 +140,7 @@ const DashboardDefault = () => {
                         <Grid item />
                     </Grid>
                     <MainCard sx={{ mt: 2 }} content={false}>
-                        <Box sx={{ p: 3, pb: 0 }}>
+                        <Box sx={{ p: 3, pb: 3 }}>
                             <Stack spacing={2}></Stack>
                             <FormControl>
                                 <FormLabel id="demo-radio-buttons-group-label">Set Number of Datapoints</FormLabel>
@@ -124,18 +151,29 @@ const DashboardDefault = () => {
                                     name="radio-buttons-group"
                                     border="20px"
                                 >
-                                    <FormControlLabel value="2" control={<Radio />} label="2" onClick={() => setSlot(2)} />
-                                    <FormControlLabel value="3" control={<Radio />} label="er" onClick={() => setSlot(3)} />
-                                    <FormControlLabel value="4" control={<Radio />} label="4" onClick={() => setSlot(4)} />
-                                    <FormControlLabel value="5" control={<Radio />} label="5" onClick={() => setSlot(5)} />
+                                    <FormControlLabel value="2" control={<Radio />} label="2" onClick={() => setN(2)} />
+                                    <FormControlLabel value="3" control={<Radio />} label="3" onClick={() => setN(3)} />
+                                    <FormControlLabel value="4" control={<Radio />} label="4" onClick={() => setN(4)} />
+                                    <FormControlLabel value="5" control={<Radio />} label="5" onClick={() => setN(5)} />
                                 </RadioGroup>
                             </FormControl>
                             <Stack spacing={2}></Stack>
-                            <Button variant="contained" size="small" margin="20px">
+                            <Button variant="contained" size="small" margin="20px" onClick={handleExtrapolate} sx={{display: 'block'}}>
                                 Interpolate/Extrapolate
                             </Button>
+                            <TextField sx={{mt:2}} id="outlined-required" label="Target" value={target} onChange={(e) => setTarget(e.target.value)}/>
                             <Stack spacing={2}></Stack>
                         </Box>
+                    </MainCard>
+                    <MainCard sx={{ mt: 2 }} content={false}>
+                        {[...Array(n)].map((z, i) => {
+                            return (
+                                <Box sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }} key={i}>
+                                    <TextField id="outlined-required" label="X" defaultValue={x[i]} onChange={(e) => handleX(e, i)}/>
+                                    <TextField id="outlined-required" label="Y" defaultValue={y[i]} onChange={(e) => handleY(e, i)}/>
+                                </Box>
+                            );
+                        })}
                     </MainCard>
                 </Grid>
 
