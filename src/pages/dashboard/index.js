@@ -72,38 +72,46 @@ const status = [
 const DashboardDefault = () => {
     const [n, setN] = useState(2);
     const [slot, setSlot] = useState('week');
-    const [x, setX] = useState([])
-    const [y, setY] = useState([])
-    const [target, setTarget] = useState()
+    const [x, setX] = useState([]);
+    const [y, setY] = useState([]);
+    const [target, setTarget] = useState();
 
-    function handleX(e, id){
-        let result = [...x]
-        result[id] = +e.target.value
-        setX(result)
-        console.log("X:" +result)
+    function handleX(e, id) {
+        let result = [...x];
+        result[id] = +e.target.value;
+        setX(result);
+        console.log('X:' + result);
     }
-    function handleY(e, id){
-        let result = [...y]
-        result[id] = +e.target.value
-        setY(result)
-        console.log("Y:" + result)
+    function handleY(e, id) {
+        let result = [...y];
+        result[id] = +e.target.value;
+        setY(result);
+        console.log('Y:' + result);
     }
-    function handleExtrapolate(){
-        const {ans} = dividedDiff(n, +target, x, [y.map(e => [e])])
-        let tmpX = [...x, +target]
-        setX(tmpX)
-        let tmpY = [...y, ans]
-        setY(tmpY)
-        console.log(tmpX, tmpY)
-    }
+    function handleExtrapolate() {
+        let ly = [];
+        for (var i = 0; i < 10; i++) ly.push(new Array(10));
 
+        ly[0][0] = y[0];
+        ly[1][0] = y[1];
+        ly[2][0] = y[2];
+        ly[3][0] = y[3];
+        ly[4][0] = y[4];
+
+        const { ans } = dividedDiff(n, +target, x, ly);
+        let tmpX = [...x, +target];
+        setX(tmpX);
+        let tmpY = [...y, ans.toFixed(2)];
+        setY(tmpY);
+        console.log(tmpX, tmpY);
+    }
 
     return (
         <>
             <Grid container rowSpacing={4.5} columnSpacing={2.75}>
                 {/* row 1 */}
                 <Grid item xs={12} sx={{ mb: -2.25 }}>
-                    <Typography variant="h5">Interpolator / Extrapolator Using Divided Difference Method</Typography>
+                    <Typography variant="h5">Extrapolator Using Divided Difference Method</Typography>
                 </Grid>
 
                 <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
@@ -112,18 +120,6 @@ const DashboardDefault = () => {
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Graph</Typography>
-                        </Grid>
-                        <Grid item>
-                            <Stack direction="row" alignItems="center" spacing={0}>
-                                <Button
-                                    size="small"
-                                    onClick={() => setSlot('week')}
-                                    color={slot === 'week' ? 'primary' : 'secondary'}
-                                    variant={slot === 'week' ? 'outlined' : 'text'}
-                                >
-                                    Reset
-                                </Button>
-                            </Stack>
                         </Grid>
                     </Grid>
                     <MainCard content={false} sx={{ mt: 1.5 }}>
@@ -158,10 +154,16 @@ const DashboardDefault = () => {
                                 </RadioGroup>
                             </FormControl>
                             <Stack spacing={2}></Stack>
-                            <Button variant="contained" size="small" margin="20px" onClick={handleExtrapolate} sx={{display: 'block'}}>
-                                Interpolate/Extrapolate
+                            <Button variant="contained" size="small" margin="20px" onClick={handleExtrapolate} sx={{ display: 'block' }}>
+                                Extrapolate
                             </Button>
-                            <TextField sx={{mt:2}} id="outlined-required" label="Target" value={target} onChange={(e) => setTarget(e.target.value)}/>
+                            <TextField
+                                sx={{ mt: 2 }}
+                                id="outlined-required"
+                                label="Target"
+                                value={target}
+                                onChange={(e) => setTarget(e.target.value)}
+                            />
                             <Stack spacing={2}></Stack>
                         </Box>
                     </MainCard>
@@ -169,8 +171,8 @@ const DashboardDefault = () => {
                         {[...Array(n)].map((z, i) => {
                             return (
                                 <Box sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }} key={i}>
-                                    <TextField id="outlined-required" label="X" defaultValue={x[i]} onChange={(e) => handleX(e, i)}/>
-                                    <TextField id="outlined-required" label="Y" defaultValue={y[i]} onChange={(e) => handleY(e, i)}/>
+                                    <TextField id="outlined-required" label="X" defaultValue={x[i]} onChange={(e) => handleX(e, i)} />
+                                    <TextField id="outlined-required" label="Y" defaultValue={y[i]} onChange={(e) => handleY(e, i)} />
                                 </Box>
                             );
                         })}
@@ -178,7 +180,7 @@ const DashboardDefault = () => {
                 </Grid>
 
                 {/* row 3 */}
-                <Grid item xs={12} md={7} lg={8}>
+                {/* <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Solution</Typography>
@@ -188,7 +190,7 @@ const DashboardDefault = () => {
                     <MainCard sx={{ mt: 2 }} content={false}>
                         <OrdersTable />
                     </MainCard>
-                </Grid>
+                </Grid> */}
             </Grid>
         </>
     );

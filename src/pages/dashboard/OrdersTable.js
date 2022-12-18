@@ -16,11 +16,11 @@ function createData(variable, equation, label, value) {
 }
 
 const rows = [
-    createData('X^4', 'Camera Lens', 40, 2),
-    createData('X^3', 'Laptop', 300, 0),
-    createData('X^2', 'Mobile', 355, 1),
-    createData('X^1', 'Handset', 50, 1),
-    createData('X^0', 'Computer Accessories', 100, 1)
+    createData('A', 'Camera Lens', 40, 2),
+    createData('B', 'Laptop', 300, 0),
+    createData('C', 'Mobile', 355, 1),
+    createData('D', 'Handset', 50, 1),
+    createData('E', 'Computer Accessories', 100, 1)
 ];
 
 function descendingComparator(a, b, orderBy) {
