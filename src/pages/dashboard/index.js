@@ -90,7 +90,7 @@ const DashboardDefault = () => {
     }
     function handleExtrapolate() {
         let ly = [];
-        for (let i = 0; i < 10; i++) ly.push(new Array(10));
+        for (var i = 0; i < 10; i++) ly.push(new Array(10));
 
         ly[0][0] = y[0];
         ly[1][0] = y[1];

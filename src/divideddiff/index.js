@@ -1,4 +1,4 @@
-function dividedDiff(n, x, datapx, datapy){
+export default function dividedDiff(n, x, datapx, datapy){
     // eslint-disable-next-line no-debugger
     debugger;
     let arrx = [];
