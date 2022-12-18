@@ -125,13 +125,13 @@ const DashboardDefault = () => {
                                     border="20px"
                                 >
                                     <FormControlLabel value="2" control={<Radio />} label="2" onClick={() => setSlot(2)} />
-                                    <FormControlLabel value="3" control={<Radio />} label="er" onClick={() => setSlot(3)} />
+                                    <FormControlLabel value="3" control={<Radio />} label="3" onClick={() => setSlot(3)} />
                                     <FormControlLabel value="4" control={<Radio />} label="4" onClick={() => setSlot(4)} />
                                     <FormControlLabel value="5" control={<Radio />} label="5" onClick={() => setSlot(5)} />
                                 </RadioGroup>
                             </FormControl>
                             <Stack spacing={2}></Stack>
-                            <Button variant="contained" size="small" margin="20px">
+                            <Button variant="contained" size="small" margin="30px">
                                 Interpolate/Extrapolate
                             </Button>
                             <Stack spacing={2}></Stack>
