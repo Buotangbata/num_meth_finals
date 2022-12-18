@@ -1,7 +1,8 @@
-export default function dividedDiff(n, x, datapx, datapy){
-    let arrx = [];
+function dividedDiff(n, x, datapx, datapy){
     // eslint-disable-next-line no-debugger
     debugger;
+    let arrx = [];
+
 
     for (let i = 1; i < n; i++) {
         for (let j = 0; j < n - i; j++) {
@@ -24,9 +25,8 @@ export default function dividedDiff(n, x, datapx, datapy){
 function proterm(i, value, x)
 {
     let pro = 1;
-    for (let j = 0; j < i; j++) {
+    for (var j = 0; j < i; j++) {
         pro = pro * (value - x[j]);
     }
     return pro;
 }
-
